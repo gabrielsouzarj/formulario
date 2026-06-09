@@ -266,8 +266,15 @@
 
     @media (max-width: 600px) {
       .field-row { grid-template-columns: 1fr; }
-      .phone-row { grid-template-columns: 1fr; }
+      .phone-row { flex-direction: column; }
       .header-meta { flex-direction: column; gap: 4px; }
+      body { font-size: 17px; }
+      label { font-size: 15px; }
+      input[type="text"], input[type="email"], input[type="url"], input[type="tel"], select, textarea { font-size: 16px; padding: 16px; }
+      .btn-next, .btn-submit { font-size: 16px; padding: 16px 32px; }
+      .step-title { font-size: 26px; }
+      .header h1 { font-size: 42px; }
+      .header p { font-size: 17px; }
     }
   </style>
 </head>
