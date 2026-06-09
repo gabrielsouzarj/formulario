@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aplicação de Projeto</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #f0ede8;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    .header {
+      text-align: center;
+      padding: 60px 24px 40px;
+      border-bottom: 1px solid #d4cfc8;
+    }
+
+    .header .label {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: #b5a990;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .header p {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 16px;
+      color: #555;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .header-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 700px;
+      margin: 32px auto 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 13px;
+      color: #888;
+      font-style: italic;
+    }
+
+    /* FORM CONTAINER */
+    .form-wrap {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      width: 100%;
+    }
+
+    /* STEPS */
+    .step {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-title {
+      font-size: clamp(22px, 4vw, 30px);
+      font-weight: 400;
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+
+    .step-subtitle {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 36px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* FIELDS */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .field-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #1a1a1a;
+    }
+
+    label .req {
+      color: #b5a990;
+      margin-left: 3px;
+    }
+
+    label .opt {
+      color: #aaa;
+      font-weight: 400;
+      margin-left: 4px;
+      font-size: 12px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    input[type="tel"],
+    select,
+    textarea {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-family: 'Helvetica Neue', sans-serif;
+      color: #1a1a1a;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #b5a990;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .phone-row {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .phone-row select { flex: 0 0 160px; }
+    .phone-row #ddd { flex: 0 0 60px; }
+    .phone-row #whatsapp { flex: 1; }
+
+    .field-hint {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    .char-count {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    .char-count.ok { color: #7a9e7e; }
+
+    /* NAVIGATION */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid #d4cfc8;
+    }
+
+    .btn-back {
+      background: none;
+      border: none;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 14px;
+      color: #888;
+      cursor: pointer;
+      padding: 8px 0;
+    }
+
+    .btn-back:hover { color: #1a1a1a; }
+
+    .btn-next, .btn-submit {
+      background: #1a1a1a;
+      color: #f0ede8;
+      border: none;
+      border-radius: 4px;
+      padding: 14px 32px;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-next:hover, .btn-submit:hover { background: #333; }
+    .btn-next:disabled, .btn-submit:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* SUCCESS */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 60px 24px;
+    }
+
+    .success h2 {
+      font-size: 32px;
+      font-weight: 400;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .success p {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 15px;
+      color: #555;
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar {
+      height: 2px;
+      background: #e0dbd4;
+      margin-bottom: 40px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #b5a990;
+      transition: width 0.4s ease;
+    }
+
+    @media (max-width: 600px) {
+      .field-row { grid-template-columns: 1fr; }
+      .phone-row { grid-template-columns: 1fr; }
+      .header-meta { flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="label">Aplicação</div>
+    <h1>Quero um site</h1>
+    <p>Este formulário nos ajuda a entender o seu projeto e entregar o melhor resultado possível.</p>
+    <div class="header-meta">
+      <span>Aplicação de Projeto</span>
+      <span>Confidencial · Respondido em até 24h</span>
+    </div>
+  </div>
+
+  <div class="form-wrap">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 50%"></div>
+    </div>
+
+    <form id="applicationForm" action="https://script.google.com/macros/s/AKfycbxZhb4sm8fL9m4P9Gr1jHY4DLJ-eqmVSn5H-tv_PWw6_DArpJsOgDgKM5nD0IF5h8lElg/exec" method="POST">
+
+      <!-- ETAPA 1 -->
+      <div class="step active" id="step1">
+        <div class="step-title">Suas informações</div>
+        <div class="step-subtitle"></div>
+
+        <div class="field-row full">
+          <div class="field">
+            <label for="nome">Nome completo <span class="req">*</span></label>
+            <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required  />
+          </div>
+        </div>
+
+        <div class="field-row full">
+          <div class="field">
+            <label for="whatsapp">WhatsApp <span class="req">*</span></label>
+            <p class="field-hint">Selecione o código do país e depois digite seu número. Você vai receber a confirmação por aqui.</p>
+            <div class="phone-row">
+              <select name="pais" id="pais" required>
+                <option value="+55">🇧🇷 +55 Brasil</option>
+                <option value="+1">🇺🇸 +1 EUA</option>
+                <option value="+351">🇵🇹 +351 Portugal</option>
+                <option value="+54">🇦🇷 +54 Argentina</option>
+                <option value="+598">🇺🇾 +598 Uruguai</option>
+                <option value="+595">🇵🇾 +595 Paraguai</option>
+                <option value="+56">🇨🇱 +56 Chile</option>
+                <option value="+57">🇨🇴 +57 Colômbia</option>
+              </select>
+              <input type="tel" id="ddd" name="ddd" placeholder="11" required title="Digite o DDD com 2 dígitos" oninput="let v=this.value.replace(/[^0-9]/g,'');if(v.length===2){this.value='('+v+')';document.getElementById('whatsapp').focus();}else{this.value=v;}" maxlength="4" style="max-width:70px" />
+              <input type="tel" id="whatsapp" name="whatsapp" placeholder="9 9999-9999" required oninput="let v=this.value.replace(/[^0-9]/g,'');if(v.length>5)v=v.slice(0,1)+' '+v.slice(1,5)+'-'+v.slice(5,9);else if(v.length>1)v=v.slice(0,1)+' '+v.slice(1);this.value=v;" maxlength="12" />
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row full">
+          <div class="field">
+            <label for="empresa">Nome da empresa <span class="req">*</span></label>
+            <input type="text" id="empresa" name="empresa" placeholder="Sua empresa" required  />
+          </div>
+        </div>
+
+        <div class="nav">
+          <span></span>
+          <button type="button" class="btn-next" onclick="goTo(2)">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- ETAPA 2 -->
+      <div class="step" id="step2">
+        <div class="step-title">Compartilhe sua visão</div>
+        <div class="step-subtitle">Detalhes e objetivos do projeto</div>
+
+        <div class="field-row full">
+          <div class="field">
+            <label for="detalhes">Sobre a empresa <span class="req">*</span></label>
+            <textarea id="detalhes" name="detalhes" placeholder="O que a empresa faz, objetivo do site e público-alvo..." required minlength="50" oninput="updateCount(this)"></textarea>
+            <div class="char-count" id="detalhesCount">Mínimo 50 caracteres (0/50)</div>
+          </div>
+        </div>
+
+        <div class="field-row full">
+          <div class="field">
+            <label for="inspiracao">Observações de design <span class="req">*</span></label>
+            <textarea id="inspiracao" name="inspiracao" placeholder="Estilo visual, cores, tom de voz..." required></textarea>
+          </div>
+        </div>
+
+        <div class="field-row full">
+          <div class="field">
+            <label for="referencia">Referência de sites que gosta <span class="opt">(opcional)</span></label>
+            <input type="text" id="referencia" name="referencia" placeholder="exemplo.com" />
+          </div>
+        </div>
+
+        <div class="field-row full">
+          <div class="field">
+            <label for="site_atual">Site atual <span class="opt">(opcional)</span></label>
+            <input type="text" id="site_atual" name="site_atual" placeholder="exemplo.com" />
+          </div>
+        </div>
+
+        <div class="field-row full">
+          <div class="field">
+            <label for="orcamento">Orçamento <span class="req">*</span></label>
+            <select id="orcamento" name="orcamento" required>
+              <option value="" disabled selected>Selecione o orçamento</option>
+              <option value="R$1.000 · Profissional">R$1.000 · Profissional</option>
+              <option value="R$2.500 · Profissional com animação">R$2.500 · Profissional com animação</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="nav">
+          <button type="button" class="btn-back" onclick="goTo(1)">← Voltar</button>
+          <button type="submit" class="btn-submit">Enviar aplicação →</button>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- SUCESSO -->
+    <div class="success" id="successMsg">
+      <h2>Aplicação recebida</h2>
+      <p>Obrigado pelo interesse. Vou analisar e entrar em contato em até 24 horas.</p>
+    </div>
+  </div>
+
+  <script>
+    const totalSteps = 2;
+
+    function goTo(step) {
+      const current = document.querySelector('.step.active');
+      const currentIndex = parseInt(current.id.replace('step', ''));
+
+      if (step > currentIndex) {
+        const inputs = current.querySelectorAll('[required]');
+        for (let input of inputs) {
+          if (!input.value.trim()) {
+            input.focus();
+            input.style.borderColor = '#c0392b';
+            setTimeout(() => input.style.borderColor = '', 1500);
+            return;
+          }
+        }
+
+        if (currentIndex === 1) {
+          const ddd = document.getElementById('ddd');
+          const whatsapp = document.getElementById('whatsapp');
+          if (ddd && ddd.value.replace(/[^0-9]/g,'').length !== 2) {
+            ddd.focus(); ddd.style.borderColor = '#c0392b';
+            setTimeout(() => ddd.style.borderColor = '', 1500); return;
+          }
+          if (whatsapp && whatsapp.value.replace(/[^0-9]/g,'').length !== 9) {
+            whatsapp.focus(); whatsapp.style.borderColor = '#c0392b';
+            setTimeout(() => whatsapp.style.borderColor = '', 1500); return;
+          }
+          const camposTexto = ['nome', 'empresa'];
+          for (const id of camposTexto) {
+            const campo = document.getElementById(id);
+            if (campo && campo.value.trim().length < 2) {
+              campo.focus(); campo.style.borderColor = '#c0392b';
+              setTimeout(() => campo.style.borderColor = '', 1500); return;
+            }
+          }
+        }
+
+        if (currentIndex === 2) {
+          const dominioRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?(\/.*)?$/;
+          const camposSite = ['referencia', 'site_atual'];
+          for (const id of camposSite) {
+            const campo = document.getElementById(id);
+            if (campo && campo.value.trim() && !dominioRegex.test(campo.value.trim())) {
+              campo.focus(); campo.style.borderColor = '#c0392b';
+              setTimeout(() => campo.style.borderColor = '', 1500); return;
+            }
+          }
+        }
+
+        const textarea = current.querySelector('textarea[minlength]');
+        if (textarea && textarea.value.length < 50) {
+          textarea.focus();
+          textarea.style.borderColor = '#c0392b';
+          setTimeout(() => textarea.style.borderColor = '', 1500);
+          return;
+        }
+      }
+
+      current.classList.remove('active');
+      document.getElementById('step' + step).classList.add('active');
+      document.getElementById('progressFill').style.width = (step / totalSteps * 100) + '%';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateCount(el) {
+      const len = el.value.length;
+      const min = 50;
+      const counter = document.getElementById(el.id + 'Count');
+      if (len >= min) {
+        counter.textContent = len + ' caracteres ✓';
+        counter.className = 'char-count ok';
+      } else {
+        counter.textContent = 'Mínimo 50 caracteres (' + len + '/' + min + ')';
+        counter.className = 'char-count';
+      }
+    }
+
+    document.getElementById('applicationForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const fd = new FormData(form);
+      const data = {};
+      fd.forEach((v, k) => data[k] = v);
+
+      const btn = form.querySelector('.btn-submit');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      const dddLimpo = (data.ddd || '').replace(/[^0-9]/g, '');
+      const whatsappLimpo = (data.whatsapp || '').replace(/[^0-9]/g, '');
+      data.ddd = dddLimpo;
+      data.whatsapp = whatsappLimpo;
+
+      const dominioRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?(\/.*)?$/;
+      for (const id of ['referencia', 'site_atual']) {
+        const campo = document.getElementById(id);
+        if (campo && campo.value.trim() && !dominioRegex.test(campo.value.trim())) {
+          campo.focus(); campo.style.borderColor = '#c0392b';
+          setTimeout(() => campo.style.borderColor = '', 1500);
+          return;
+        }
+      }
+
+      try {
+        await fetch(form.action, {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors'
+        });
+
+        form.style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('progressFill').style.width = '100%';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch {
+        alert('Erro de conexão. Tente novamente.');
+      }
+    });
+  </script>
+
+</body>
+</html>
